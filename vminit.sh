@@ -26,11 +26,11 @@ echo > $LOGFILE
 sed -i 's/10.10.22.4/10.110.22.4/g' /etc/yum.repos.d/r7ppc64le.repo
 
 echo "$(timestamp) ---------- Starting DB Install ----------" >> $LOGFILE
-yum -y install mariadb mariadb-server
+yum -y install mariadb mariadb-server >> $LOGFILE
 touch /var/log/mariadb/mariadb.log
 chown mysql.mysql /var/log/mariadb/mariadb.log
 systemctl enable mariadb.service
-systemctl start mariadb.service
+systemctl start mariadb.service >> $LOGFILE
 mysqladmin -u root password $DBROOTPASSWD
 echo "$(timestamp) ---------- Finished DB Install ----------" >> $LOGFILE
 
