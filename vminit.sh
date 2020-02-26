@@ -1,10 +1,10 @@
 #!/bin/bash
 
-EXPECTED_ARGS=5
+EXPECTED_ARGS=4
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
-  echo "Usage: `basename $0` <DBROOTPASSWD> <DBNAME> <DBUSER> <DBPASSWORD> <SQLFILE>"
+  echo "Usage: `basename $0` <DBROOTPASSWD> <DBNAME> <DBUSER> <DBPASSWORD>"
   exit 1
 fi
 
@@ -12,7 +12,6 @@ DBROOTPASSWD=$1
 DBNAME=$2
 DBUSER=$3
 DBPASSWORD=$4
-SQLFILE=$5
 
 timestamp()
 {
