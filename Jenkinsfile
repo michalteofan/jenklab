@@ -26,9 +26,9 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
         secretVolume(secretName: 'pvccert', mountPath: '/ostackcrt'),
     ],
     containers: [
-        containerTemplate(name: 'jnlp'   , image: '${env.REGISTRY}/${env.NAMESPACE}/jenkppc64-slave-jnlp:latest', args: '${computer.jnlpmac} ${computer.name}'),
-        containerTemplate(name: 'kubectl', image: '${env.REGISTRY}/${env.NAMESPACE}/kubectl:v1.13.9', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'ostackcli' , image: '${env.REGISTRY}/${env.NAMESPACE}/ostackcli:v1.0', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'jnlp'   , image: 'nm-mgmt.iic.pl.ibm.com:8500/labns/jenkppc64-slave-jnlp:latest', args: '${computer.jnlpmac} ${computer.name}'),
+        containerTemplate(name: 'kubectl', image: 'nm-mgmt.iic.pl.ibm.com:8500/labns/kubectl:v1.13.9', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'ostackcli' , image: 'nm-mgmt.iic.pl.ibm.com:8500/labns/ostackcli:v1.0', ttyEnabled: true, command: 'cat'),
     ]
 ) 
   
