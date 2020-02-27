@@ -10,7 +10,7 @@ def dbserver = env.DBSERVER ?: "dbserver"
 def dbrootpasswd = env.DBROOTPASSWD ?: "dbrootpasswd"
 def dbuser = env.DBUSER ?: "wpuser"
 def dbpassword = env.DBPASSWORD ?: "dbpassword"
-def dbname = env.DBNAME ?" "wpdb"
+def dbname = env.DBNAME ?: "wpdb"
 def appname = env.APPNAME ?: "appname"
 
 def vmimage = env.VMIMAGE ?: "RHEL 7.4 LE Base Image"
