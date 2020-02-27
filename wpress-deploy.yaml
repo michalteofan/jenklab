@@ -23,5 +23,17 @@ spec:
         ports:
         - containerPort: 80
           name: APPNAME
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 3 
       nodeSelector:
         beta.kubernetes.io/arch: ppc64le
