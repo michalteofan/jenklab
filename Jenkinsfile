@@ -50,7 +50,7 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
                     sed -i 's/DBNAME/${env.DBNAME}/g' clinit.sh
                     sed -i 's/DBROOTPASSWD/${env.DBROOTPASSWD}/g' clinit.sh
                     source /ostackrc/pvcjenkinsrc
-                    openstack-3 server create --image ${vmimage} --flavor ${flavor} --key-name ${key} --network ${network} --user-data clinit.sh ${env.DBSERVER} --wait
+                    openstack-3 server create --image "${vmimage}" --flavor ${flavor} --key-name ${key} --network ${network} --user-data clinit.sh ${env.DBSERVER} --wait
                     """
                     IP = sh (script: "${env.WORKSPACE}getip.sh ${env.DBSERVER}", returnStdout: true).trim()
                 }
