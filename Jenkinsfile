@@ -6,12 +6,8 @@ def nodeSelector = env.NODE_SELECTOR ?: "beta.kubernetes.io/arch=ppc64le"
 def image = env.IMAGE ?: "nm-mgmt.iic.pl.ibm.com:8500/labns/wordpress:v1.0"
 
 def dbserver = env.DBSERVER ?: "dbserver"
-def dbname = env.DBNAME ?: "dbname"
-def dbuser = env.DBUSER ?: "dbuser"
-def dbpass = env.DBPASSWORD ?: "dbpassword"
-def dbrootpass = env.DBROOTPASSWD ?: "dbrootpasswd"
-
 def appname = env.APPNAME ?: "appname"
+
 def vmimage = env.VMIMAGE ?: "RHEL 7.4 LE Base Image"
 def flavor = env.FLAVOR ?: "tiny"
 def key = env.KEY ?: "labkey"
