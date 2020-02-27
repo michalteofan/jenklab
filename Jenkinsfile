@@ -13,10 +13,10 @@ def dbpassword = env.DBPASSWORD ?: "dbpassword"
 def dbname = env.DBNAME ?: "wpdb"
 def appname = env.APPNAME ?: "appname"
 
-def vmimage = env.VMIMAGE ?: "RHEL 7.4 LE Base Image"
-def flavor = env.FLAVOR ?: "tiny"
-def key = env.KEY ?: "labkey"
-def network = env.NETWORK ?: "VPNSEA"
+def vmimage = "RHEL 7.4 LE Base Image"
+def flavor = "tiny"
+def key = "labkey"
+def network = "VPNSEA"
 
 podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, nodeSelector: nodeSelector, envVars: [
         envVar(key: 'NAMESPACE', value: namespace),
@@ -39,7 +39,7 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
 {
     node('buildpod') {
         checkout scm 
-                container('ostackcli') {
+        container('ostackcli') {
             stage('Deploy DB using PowerVC') {
                 IP = sh (script: "${env.WORKSPACE}/getip.sh ${env.DBSERVER}", returnStdout: true).trim()
                 if (!IP?.trim()) {
@@ -51,7 +51,7 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
                     sed -i 's/DBNAME/${env.DBNAME}/g' clinit.sh
                     sed -i 's/DBROOTPASSWD/${env.DBROOTPASSWD}/g' clinit.sh
                     source /ostackrc/pvcjenkinsrc
-                    openstack-3 server create --image ${env.VMIMAGE} --flavor ${env.FLAVOR} --key-name ${env.KEY} --network ${env.VPNSEA} --user-data clinit.sh ${env.DBSERVER} --wait
+                    openstack-3 server create --image ${env.VMIMAGE} --flavor ${env.FLAVOR} --key-name ${env.KEY} --network ${env.NETWORK} --user-data clinit.sh ${env.DBSERVER} --wait
                     """
                     IP = sh (script: "${env.WORKSPACE}getip.sh ${env.DBSERVER}", returnStdout: true).trim()
                 }
