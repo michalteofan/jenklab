@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app: APPNAME
+  name: APPNAME
+spec:
+  rules:
+  - host: APPNAME.cloud.iic.pl.ibm.com
+    http:
+      paths:
+      - backend:
+          serviceName: APPNAME
+          servicePort: 80
+  tls:
+  - hosts: 
+    - APPNAME.cloud.iic.pl.ibm.com
+    secretName: host
