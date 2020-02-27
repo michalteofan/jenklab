@@ -19,7 +19,7 @@ spec:
         image: IMAGE
         envFrom:
         - configMapRef:
-          name: wpress-APPNAME
+            name: wpress-APPNAME
         ports:
         - containerPort: 80
           name: APPNAME
