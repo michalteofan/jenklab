@@ -82,8 +82,8 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
                     sed -i 's/APPNAME/${env.APPNAME}/g' wpress-ing.yaml
                     kubectl apply -f wpress-ing.yaml
                 fi
-                echo 'Service created'                
-                kubectl --namespace=${env.NAMESPACE} describe service -l app=${env.APPNAME}
+                echo 'Ingress created'                
+                kubectl --namespace=${env.NAMESPACE} describe ingress -l app=${env.APPNAME}
                 
                 CFGMAP=`kubectl --namespace=${env.NAMESPACE} get cm -l app=${env.APPNAME} -o name`
                 kubectl --namespace=${env.NAMESPACE} get cm
@@ -92,14 +92,14 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
                     echo 'Must create a config map'
                     echo "Creating the config map"
                     sed -i 's/APPNAME/${env.APPNAME}/g' wpress-cmap.yaml
-                    sed -i 's/DBNAME/${env.DBNAME}/g' wpress-cmap.yaml
+                    sed -i 's/DBNAME/${dbname}/g' wpress-cmap.yaml
                     sed -i 's/DBPASSWORD/${env.DBPASSWORD}/g' wpress-cmap.yaml
-                    sed -i 's/DBUSER/${env.DBUSER}/g' wpress-cmap.yaml
+                    sed -i 's/DBUSER/${dbuser}/g' wpress-cmap.yaml
                     sed -i 's/DBSERVER/${env.DBSERVER}/g' wpress-cmap.yaml                                                            
-                    kubectl apply -f wpress-ing.yaml
+                    kubectl apply -f wpress-cmap.yaml
                 fi
                 echo 'Service created'                
-                kubectl --namespace=${env.NAMESPACE} describe service -l app=${env.APPNAME}                
+                kubectl --namespace=${env.NAMESPACE} describe cm -l app=${env.APPNAME}                
                 
                 DEPLOYMENT=`kubectl --namespace=${env.NAMESPACE} get deployments -l app=${env.APPNAME} -o name`
                 kubectl --namespace=${env.NAMESPACE} get deployments
