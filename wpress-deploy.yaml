@@ -18,11 +18,8 @@ spec:
       - name: APPNAME
         image: IMAGE
         envFrom:
-          - secretRef:
-              name: wpress
-        env:
-          - name: WORDPRESS_DB_HOST
-            value: IPADDR
+        - configMapRef:
+          name: wpress-APPNAME
         ports:
         - containerPort: 80
           name: APPNAME

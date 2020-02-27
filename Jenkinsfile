@@ -7,6 +7,10 @@ def image = env.IMAGE ?: "nm-mgmt.iic.pl.ibm.com:8500/labns/wordpress:v1.0"
 def registry = env.REGISTRY ?: "nm-mgmt.iic.pl.ibm.com:8500"
 
 def dbserver = env.DBSERVER ?: "dbserver"
+def dbrootpasswd = env.DBROOTPASSWD ?: "dbrootpasswd"
+def dbuser = env.DBUSER ?: "wpuser"
+def dbpassword = env.DBPASSWORD ?: "dbpassword"
+def dbname = env.DBNAME ?" "wpdb"
 def appname = env.APPNAME ?: "appname"
 
 def vmimage = env.VMIMAGE ?: "RHEL 7.4 LE Base Image"
@@ -42,6 +46,10 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
                     sh """
                     #!/bin/bash
                     sleep 120
+                    sed -i 's/DBUSER/${env.DBUSER}/g' clinit.sh
+                    sed -i 's/DBPASSWORD/${env.DBPASSWORD}/g' clinit.sh
+                    sed -i 's/DBNAME/${env.DBNAME}/g' clinit.sh
+                    sed -i 's/DBROOTPASSWD/${env.DBROOTPASSWD}/g' clinit.sh
                     source /ostackrc/pvcjenkinsrc
                     openstack-3 server create --image ${env.VMIMAGE} --flavor ${env.FLAVOR} --key-name ${env.KEY} --network ${env.VPNSEA} --user-data clinit.sh ${env.DBSERVER} --wait
                     """
@@ -77,6 +85,22 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
                 fi
                 echo 'Service created'                
                 kubectl --namespace=${env.NAMESPACE} describe service -l app=${env.APPNAME}
+                
+                CFGMAP=`kubectl --namespace=${env.NAMESPACE} get cm -l app=${env.APPNAME} -o name`
+                kubectl --namespace=${env.NAMESPACE} get cm
+                if [ -z \${CFGMAP} ]; then
+                    # No Config Map
+                    echo 'Must create a config map'
+                    echo "Creating the config map"
+                    sed -i 's/APPNAME/${env.APPNAME}/g' wpress-cmap.yaml
+                    sed -i 's/DBNAME/${env.DBNAME}/g' wpress-cmap.yaml
+                    sed -i 's/DBPASSWORD/${env.DBPASSWORD}/g' wpress-cmap.yaml
+                    sed -i 's/DBUSER/${env.DBUSER}/g' wpress-cmap.yaml
+                    sed -i 's/DBSERVER/${env.DBSERVER}/g' wpress-cmap.yaml                                                            
+                    kubectl apply -f wpress-ing.yaml
+                fi
+                echo 'Service created'                
+                kubectl --namespace=${env.NAMESPACE} describe service -l app=${env.APPNAME}                
                 
                 DEPLOYMENT=`kubectl --namespace=${env.NAMESPACE} get deployments -l app=${env.APPNAME} -o name`
                 kubectl --namespace=${env.NAMESPACE} get deployments
