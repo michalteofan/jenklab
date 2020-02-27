@@ -4,6 +4,7 @@ def serviceAccount = env.SERVICE_ACCOUNT ?: "jenk-jenkins"
 def namespace = env.NAMESPACE ?: "labns"
 def nodeSelector = env.NODE_SELECTOR ?: "beta.kubernetes.io/arch=ppc64le"
 def image = env.IMAGE ?: "nm-mgmt.iic.pl.ibm.com:8500/labns/wordpress:v1.0"
+def registry = env.REGISTRY ?: "nm-mgmt.iic.pl.ibm.com:8500"
 
 def dbserver = env.DBSERVER ?: "dbserver"
 def appname = env.APPNAME ?: "appname"
