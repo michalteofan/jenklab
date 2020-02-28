@@ -108,6 +108,7 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
                     echo 'No deployment to update'
                     echo "Starting deployment"
                     sed -i 's/APPNAME/${env.APPNAME}/g' wpress-deploy.yaml
+                    sed -i 's/IMAGE/${env.IMAGE}/g' wpress-deploy.yaml
                     kubectl apply -f wpress-deploy.yaml
                     exit 0
                 fi
