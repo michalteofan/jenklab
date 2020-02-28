@@ -8,11 +8,11 @@ def registry = env.REGISTRY ?: "nm-mgmt.iic.pl.ibm.com:8500"
 
 def dbserver = env.DBSERVER ?: "dbserver"
 def dbrootpasswd = env.DBROOTPASSWD ?: "dbrootpasswd"
-def dbuser = env.DBUSER ?: "wpuser"
 def dbpassword = env.DBPASSWORD ?: "dbpassword"
-def dbname = env.DBNAME ?: "wpdb"
 def appname = env.APPNAME ?: "appname"
 
+def dbuser = "wpuser"
+def dbname = "wpdb"
 def vmimage = "RHEL 7.4 LE Base Image"
 def flavor = "tiny"
 def key = "labkey"
@@ -45,9 +45,9 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
                 if (!IP?.trim()) {
                     sh """
                     #!/bin/bash
-                    sed -i 's/DBUSER/${env.DBUSER}/g' clinit.sh
+                    sed -i 's/DBUSER/${dbuser}/g' clinit.sh
                     sed -i 's/DBPASSWORD/${env.DBPASSWORD}/g' clinit.sh
-                    sed -i 's/DBNAME/${env.DBNAME}/g' clinit.sh
+                    sed -i 's/DBNAME/${dbname}/g' clinit.sh
                     sed -i 's/DBROOTPASSWD/${env.DBROOTPASSWD}/g' clinit.sh
                     source /ostackrc/pvcjenkinsrc
                     openstack-3 server create --image "${vmimage}" --flavor ${flavor} --key-name ${key} --network ${network} --user-data clinit.sh ${env.DBSERVER} --wait
