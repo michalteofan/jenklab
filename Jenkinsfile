@@ -95,7 +95,7 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
                     sed -i 's/DBNAME/${dbname}/g' wpress-cmap.yaml
                     sed -i 's/DBPASSWORD/${env.DBPASSWORD}/g' wpress-cmap.yaml
                     sed -i 's/DBUSER/${dbuser}/g' wpress-cmap.yaml
-                    sed -i 's/DBSERVER/${env.DBSERVER}/g' wpress-cmap.yaml                                                            
+                    sed -i 's/DBSERVER/${env.IPADDR}/g' wpress-cmap.yaml                                                            
                     kubectl apply -f wpress-cmap.yaml
                 fi
                 echo 'Service created'                
