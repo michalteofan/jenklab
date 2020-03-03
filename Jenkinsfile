@@ -18,7 +18,7 @@ def flavor = "tiny"
 def key = "labkey"
 def network = "VPNSEA"
 
-podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, nodeSelector: nodeSelector, envVars: [
+podTemplate(cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, nodeSelector: nodeSelector, envVars: [
         envVar(key: 'NAMESPACE', value: namespace),
         envVar(key: 'REGISTRY', value: registry),
         envVar(key: 'NODE_SELECTOR', value: nodeSelector)
@@ -37,7 +37,7 @@ podTemplate(label: 'buildpod', cloud: cloud, serviceAccount: serviceAccount, nam
 ) 
   
 {
-    node('buildpod') {
+    node(POD_LABEL) {
         checkout scm 
         container('ostackcli') {
             stage('Deploy DB using PowerVC') {
