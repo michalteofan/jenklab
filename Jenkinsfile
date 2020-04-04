@@ -93,13 +93,25 @@ podTemplate(cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, 
                     echo "Creating the config map"
                     sed -i 's/APPNAME/${env.APPNAME}/g' wpress-cmap.yaml
                     sed -i 's/DBNAME/${dbname}/g' wpress-cmap.yaml
-                    sed -i 's/DBPASSWORD/${env.DBPASSWORD}/g' wpress-cmap.yaml
-                    sed -i 's/DBUSER/${dbuser}/g' wpress-cmap.yaml
                     sed -i 's/DBSERVER/${env.IPADDR}/g' wpress-cmap.yaml                                                            
                     kubectl apply -f wpress-cmap.yaml
                 fi
-                echo 'Service created'                
+                echo 'ConfigMap created'                
                 kubectl --namespace=${env.NAMESPACE} describe cm -l app=${env.APPNAME}                
+                
+                SEC=`kubectl --namespace=${env.NAMESPACE} get secret -l app=${env.APPNAME} -o name`
+                kubectl --namespace=${env.NAMESPACE} get secret
+                if [ -z \${SEC} ]; then
+                    # No Secret
+                    echo 'Must create a secret'
+                    echo "Creating the secret"
+                    sed -i 's/APPNAME/${env.APPNAME}/g' wpress-sec.yaml
+                    sed -i 's/DBPASSWORD/${env.DBPASSWORD}/g' wpress-sec.yaml
+                    sed -i 's/DBUSER/${dbuser}/g' wpress-sec.yaml
+                    kubectl apply -f wpress-sec.yaml
+                fi
+                echo 'Secret created'                
+                kubectl --namespace=${env.NAMESPACE} describe secret -l app=${env.APPNAME}                
                 
                 DEPLOYMENT=`kubectl --namespace=${env.NAMESPACE} get deployments -l app=${env.APPNAME} -o name`
                 kubectl --namespace=${env.NAMESPACE} get deployments

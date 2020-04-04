@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: wpress
+  name: wpress-APPNAME
+  labels:
+    app: APPNAME
 type: Opaque
-data:
-  WORDPRESS_DB_USER: d3B1c2Vy
-  WORDPRESS_DB_PASSWORD: cGFzc3cwcmQ=
-  WORDPRESS_DB_NAME: d3BkYg==
+stringData:
+  WORDPRESS_DB_USER: DBUSER
+  WORDPRESS_DB_PASSWORD: DBPASSWORD

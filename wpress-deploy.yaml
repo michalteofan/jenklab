@@ -20,6 +20,8 @@ spec:
         envFrom:
         - configMapRef:
             name: wpress-APPNAME
+        - secretRef:
+            name: wpress-APPNAME
         ports:
         - containerPort: 80
           name: APPNAME
@@ -27,13 +29,13 @@ spec:
           httpGet:
             path: /healthz
             port: 80
-          initialDelaySeconds: 10
+          initialDelaySeconds: 120
           periodSeconds: 3
         readinessProbe:
           httpGet:
             path: /healthz
             port: 80
-          initialDelaySeconds: 10
+          initialDelaySeconds: 120
           periodSeconds: 3 
       nodeSelector:
         beta.kubernetes.io/arch: ppc64le
